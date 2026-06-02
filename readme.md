@@ -1,0 +1,1 @@
+This is Project Aether. We are attempting to rebuild what a programming language actually looks like. 
