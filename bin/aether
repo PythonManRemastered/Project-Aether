@@ -1,0 +1,15 @@
+#!/usr/bin/env raku
+use lib 'lib';
+use Aether;
+
+
+sub MAIN(
+    Str $file,
+    Bool :$strict = False,
+) {
+
+    my $source = slurp $file;
+    my $output = run-aether($source, :$strict);
+
+    say $output if $output.chars > 0;
+}
