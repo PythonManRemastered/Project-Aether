@@ -59,5 +59,6 @@ method parse(Str $source) {
     AST::Program.new(
         statements => @statements
     );
+    
 }
 

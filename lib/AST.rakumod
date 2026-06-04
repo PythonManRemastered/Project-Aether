@@ -15,4 +15,5 @@ our class InputStatement {
 our class AssignmentStatement {
     has Str $.name;
     has $.expression;
+    
 }
