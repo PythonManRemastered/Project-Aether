@@ -1,0 +1,12 @@
+Score ← 75
+
+IF Score > 50
+THEN
+
+
+OUTPUT "Pass"
+
+ELSE
+OUTPUT "Fail"
+
+ENDIF

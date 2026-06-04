@@ -1,1 +1,9 @@
-prnit "Hello from fuzzy mode"
+prnit "Hello"
+
+scroe ← 75
+
+iff scroe > 50
+then
+outpt "Pass"
+endif
+

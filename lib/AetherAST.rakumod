@@ -1,4 +1,4 @@
-unit module AST;
+unit module AetherAST;
 
 our class Program {
     has @.statements;
@@ -15,5 +15,15 @@ our class InputStatement {
 our class AssignmentStatement {
     has Str $.name;
     has $.expression;
-    
+
+}
+our class IfStatement {
+    has $.condition;
+    has @.thenBlock;
+    has @.elseBlock;
+}
+
+our class WhileStatement {
+    has $.condition;
+    has @.body;
 }

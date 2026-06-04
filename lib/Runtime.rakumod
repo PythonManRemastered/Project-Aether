@@ -1,16 +1,16 @@
 unit class Runtime;
 
-use AST;
+use AetherAST;
 
 has %!vars;
 
-method execute(AST::Program $program) {
+method execute(AetherAST::Program $program) {
 
     for $program.statements -> $stmt {
 
         given $stmt {
 
-            when AST::OutputStatement {
+            when AetherAST::OutputStatement {
 
                 my $value =
                     self!evaluate(
@@ -20,7 +20,7 @@ method execute(AST::Program $program) {
                 say $value;
             }
 
-            when AST::InputStatement {
+            when AetherAST::InputStatement {
 
                 my $answer = prompt("");
 
@@ -28,7 +28,7 @@ method execute(AST::Program $program) {
                     = $answer;
             }
 
-            when AST::AssignmentStatement {
+            when AetherAST::AssignmentStatement {
 
                 %!vars{$stmt.name}
                     =
@@ -36,6 +36,37 @@ method execute(AST::Program $program) {
                         $stmt.expression
                     );
             }
+
+            when AetherAST::IfStatement {
+
+                if self!evaluate(
+                    $stmt.condition
+                ) {
+
+                    my $program =
+                        AetherAST::Program.new(
+                            statements =>
+                            $stmt.thenBlock
+                        );
+
+                    self.execute(
+                        $program
+                    );
+                }
+                else {
+
+                    my $program =
+                        AetherAST::Program.new(
+                            statements =>
+                            $stmt.elseBlock
+                        );
+
+                    self.execute(
+                        $program
+                    );
+                }
+            }
+
         }
     }
 }
@@ -43,6 +74,39 @@ method execute(AST::Program $program) {
 method !evaluate($expr) {
 
     my $text = $expr.Str.trim;
+
+    if $text.contains(">") {
+
+        my ($left,$right)
+            = $text.split(">",2);
+
+        return
+            self!evaluate($left)
+            >
+            self!evaluate($right);
+    }
+
+    if $text.contains("<") {
+
+        my ($left,$right)
+            = $text.split("<",2);
+
+        return
+            self!evaluate($left)
+            <
+            self!evaluate($right);
+    }
+
+    if $text.contains("=") {
+
+        my ($left,$right)
+            = $text.split("=",2);
+
+        return
+            self!evaluate($left)
+            eq
+            self!evaluate($right);
+    }
 
     if $text.starts-with('"')
     && $text.ends-with('"') {
@@ -53,7 +117,7 @@ method !evaluate($expr) {
         );
     }
 
-    if $text ~~ /^\d+$/ {
+    if $text ~~ /^ \d+ $/ {
 
         return $text.Int;
     }
@@ -64,5 +128,4 @@ method !evaluate($expr) {
     }
 
     return $text;
-    
 }
