@@ -1,1 +1,1 @@
-This is Project Aether. We are attempting to rebuild the fundamental of manual programming. 
+This is Project Aether. We are attempting to rebuild the fundamentals of manual programming. 
